@@ -1,0 +1,19 @@
+#!/bin/bash
+#PBS -P xr60
+#PBS -l walltime=00:10:00
+#PBS -l ncpus=48
+#PBS -l mem=190gb
+#PBS -l software=qe
+#PBS -l wd
+
+module load openmpi/4.1.2
+
+module load qe/7.0
+
+export OMP_NUM_THREADS=4
+
+mpirun -map-by ppr:3:numa:PE=4 -x OMP_NUM_THREADS=4 -display-map pw.x -npool 1 -ndiag 1 -inp CeO2.in > CeO2.out
+#mpirun -map-by ppr:6:numa:PE=2 -x OMP_NUM_THREADS=2 -display-map pw.x -npool 1 -ndiag 1 -inp CeO2.in > CeO2.out
+#mpirun -np -24 pw.x -npool 1 -ndiag 1 -inp CeO2.in -> CeO2.out
+#mpirun -np 24 pw.x -npool 1 -ndiag 1 -inp CeO2.in > CeO2.out
+#mpirun pw.x -inp CeO2.in > CeO2.out
